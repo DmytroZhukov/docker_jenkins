@@ -1,0 +1,27 @@
+1.Создайте новый образ Docker из этого Dockerfile и назначьте образу значимое имя, например, «myjenkins-blueocean: 2.332.1-1»:
+docker build -t myjenkins-blueocean:2.332.1-1 .
+
+2.Запустите свой собственный myjenkins-blueocean:2.332.1-1образ как контейнер в Docker, используя следующую docker run команду:
+docker run \
+  --name jenkins-blueocean \
+  --rm \
+  --detach \
+  --network jenkins \
+  --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  --publish 8080:8080 \
+  --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  myjenkins-blueocean:2.332.1-1 
+
+ПРИМЕЧАНИЕ. Если копирование и вставка приведенного выше фрагмента команды не работает, попробуйте скопировать и вставить сюда эту версию без аннотаций:
+
+docker run --name jenkins-blueocean --rm --detach \
+  --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
+  --publish 8080:8080 --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  myjenkins-blueocean:2.332.1-1
